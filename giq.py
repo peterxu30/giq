@@ -1,8 +1,4 @@
-import os.path
-import pickle
-import pprint
-import requests
-import sys
+import os.path, pickle, pprint, requests, sys
 
 URL = "http://128.32.37.201:8079/api/query"
 BINDINGS_FILE = ".bindings.p"
