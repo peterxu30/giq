@@ -1,3 +1,4 @@
+import pprint
 import requests
 import sys
 
@@ -16,7 +17,7 @@ def post_query(input):
 	if query in query_bindings:
 		query = query_bindings[query]
 	req = requests.post(URL, data=query.encode())
-	return req.json()
+	return pprint.pformat(req.json())
 
 def get_url(_):
 	return URL
@@ -36,7 +37,7 @@ def get_all_bindings(input):
 	length = len(query_bindings)
 	if length == 0:
 		return "no bindings"
-		
+
 	for k in query_bindings:
 		v = query_bindings[k]
 		all_bindings += k
