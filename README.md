@@ -4,7 +4,7 @@ Giles Interactive Query
 An interactive way to query the Giles2 interface.
 
 ##Features
-giq allows you to submit queries to any Giles2 interface and prints the repsonses. It is nothing more than a glorified POST request maker. Allows binding of query strings to shortcuts for easy access.
+giq allows you to submit queries to any Giles interface and prints the repsonses. It is nothing more than a glorified POST request maker. Allows binding of query strings to shortcuts for easy access.
 
 ##Install
 1. Clone the repo.
