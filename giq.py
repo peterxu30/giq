@@ -20,10 +20,11 @@ def save_bindings():
 	pickle.dump(query_bindings, open(BINDINGS_FILE, "wb"))
 
 def post_query(input):
-	query = input[0]
+	query = input
 	if query in query_bindings:
 		query = query_bindings[query]
 	req = requests.post(URL, data=query.encode())
+	print(query)
 	return pprint.pformat(req.json())
 
 def get_url(_):
@@ -33,8 +34,8 @@ def switch_url(input):
 	global URL
 	URL = input[0]
 
-def bind(input):
-	query_bindings[input[0]] = input[1]
+def bind(input): #TODO: Find way of separating shortcut from query since cannot split by space
+	query_bindings[input[0]] = ' '.join(input[1:])
 
 def unbind(input):
 	del query_bindings[input[0]]
@@ -79,7 +80,7 @@ def interactive_loop():
 	while True:
 		try:
 			line = input("> ")
-			tokens = line.split(" ")
+			tokens = line.split(" ") #TODO: splitting by space will break a query
 			command = tokens.pop(0)
 			if command in functions:
 				out = functions[command](tokens)
