@@ -2,6 +2,7 @@ import os.path, pickle, pprint, requests, sys
 
 URL = "http://128.32.37.201:8079/api/query"
 BINDINGS_FILE = ".bindings.p"
+TIMEOUT = 5
 
 query_bindings = {}
 
@@ -11,7 +12,7 @@ def startup():
 		query_bindings = pickle.load(open(BINDINGS_FILE, "rb"))
 
 def help(_):
-	return 'Commands:\nhelp: get list of commands.\nexit: exit the program\nbind <shortcut> <query>: bind a query to a shortcut\nunbind <shortcut>: unbind a shortcut from a query\nsee <shortcut>: see the query bound to the given shortcut\nlist: list all query bindings\nclear: unbind all query bindings\nurl: see the current target url\nswitch <new_url>: change the target url'
+	return 'Commands:\nhelp: get list of commands.\nexit: exit the program\nbind <shortcut> <query>: bind a query to a shortcut\nunbind <shortcut>: unbind a shortcut from a query\nsee <shortcut>: see the query bound to the given shortcut\nlist: list all query bindings\nclear: unbind all query bindings\nurl: see the current target url\nswitch <new_url>: change the target url\ntimeout: see current query timeout duration (seconds)\nswtime <new_duration>: change the timeout duration'
 
 def exit(_):
 	sys.exit()
@@ -23,8 +24,8 @@ def post_query(input):
 	query = input
 	if query in query_bindings:
 		query = query_bindings[query]
-	req = requests.post(URL, data=query.encode())
-	print(query)
+	req = requests.post(URL, data=query.encode(), timeout=TIMEOUT)
+	print(req.text)
 	return pprint.pformat(req.json())
 
 def get_url(_):
@@ -33,6 +34,13 @@ def get_url(_):
 def switch_url(input):
 	global URL
 	URL = input[0]
+
+def get_timeout(_):
+	return TIMEOUT
+
+def switch_timeout(input):
+	global TIMEOUT
+	TIMEOUT = int(input[0])
 
 def bind(input): #TODO: Find way of separating shortcut from query since cannot split by space
 	query_bindings[input[0]] = ' '.join(input[1:])
@@ -68,6 +76,8 @@ functions = {
 	"exit": exit,
 	"switch": switch_url,
 	"url": get_url,
+	"swtime": switch_timeout,
+	"timeout": get_timeout,
 	"bind": bind,
 	"unbind": unbind,
 	"see": get_binding,
