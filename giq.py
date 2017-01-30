@@ -99,15 +99,17 @@ def interactive_loop():
 
 			if out != None:
 				print(out)
-				print("")
 		except KeyboardInterrupt:
-			save_bindings()
-			raise
+			pass
+			# save_bindings()
+			# raise
 		except SystemExit:
 			save_bindings()
 			raise
 		except Exception as e:
 			print(e)
+
+		print()
 
 startup()
 interactive_loop()
